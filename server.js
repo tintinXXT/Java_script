@@ -1,4 +1,4 @@
-//DB CREDENTIALS User: Mage_wizard Password: RI6lWu2PZmutwY8W
+//DB CREDENTIALS User: xxxxxxxx Password: xxxxxxxxxxx
 import express from 'express' // importando biblioteca express
 import pkg from '@prisma/client';
 const { PrismaClient } = pkg;
