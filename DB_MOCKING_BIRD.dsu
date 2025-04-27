@@ -1,0 +1,80 @@
+const fs = require('fs');
+const caminho = 'C:\\Users\\Bazzo\\Desktop\\JS_TRAINING\\data1.json';
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+function selection_screen() {
+    rl.question("Digite seu nome: ", function(name) {
+        console.log("Nome:", name);
+
+        rl.question("Digite sua idade: ", function(older) {
+            console.log("Idade:", older);
+
+            if (name && older) {
+                adicionarPessoa(name, older);
+            } else {
+                console.log("Nome ou idade inválidos.");
+            }
+
+                    rl.close();
+        });
+    });
+}
+
+
+// Função para ler dados
+function lerDados() {
+    if (!fs.existsSync(caminho)) return [];
+    const dadosBrutos = fs.readFileSync(caminho);
+    return JSON.parse(dadosBrutos);
+    
+}
+
+
+// Função para salvar dados
+function salvarDados(dados) {
+    fs.writeFileSync(caminho, JSON.stringify(dados, null, 2));
+}
+
+// CREATE
+function adicionarPessoa(nome, idade) {
+    const pessoas = lerDados();
+    const novaPessoa = { id: Date.now(), nome, idade };
+    pessoas.push(novaPessoa);
+    salvarDados(pessoas);
+    console.log("Pessoa adicionada:", novaPessoa);
+}
+
+// READ
+function listarPessoas() {
+    const pessoas = lerDados();
+    console.log("Lista de pessoas:", pessoas);
+}
+
+// UPDATE
+function atualizarPessoa(id, novosDados) {
+    let pessoas = lerDados();
+    pessoas = pessoas.map(p => p.id === id ? { ...p, ...novosDados } : p);
+    salvarDados(pessoas);
+    console.log("Pessoa atualizada!");
+}
+
+// DELETE
+function removerPessoa(id) {
+    let pessoas = lerDados();
+    pessoas = pessoas.filter(p => p.id !== id);
+    salvarDados(pessoas);
+    console.log("Pessoa removida!");
+}
+
+
+// Exemplos de uso
+selection_screen();
+//adicionarPessoa("Matheus", 28);
+// listarPessoas();
+// atualizarPessoa(1682023456789, { idade: 29 });
+// removerPessoa(1682023456789);
